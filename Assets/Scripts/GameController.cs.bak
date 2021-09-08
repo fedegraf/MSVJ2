@@ -1,0 +1,55 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class GameController : MonoBehaviour
+{
+    //public 
+    public int maxNumber;
+
+    //private
+    private int currentBall;
+    private float timeToChangeScreen = 4;
+    private float timeToGameOver;
+
+    private float resetTime;
+    private bool isWon = false;
+
+    private void Start()
+    {
+        currentBall = 0;
+        resetTime = 0;
+    }
+
+    private void Update()
+    {
+        if (currentBall >= maxNumber && !isWon)
+        {
+            timeToGameOver += Time.deltaTime;
+            GameOver();
+        }
+    }
+
+    public void AddBall()
+    {
+        currentBall++;
+    }
+
+    private void GameOver()
+    {
+        Debug.Log("Over");
+        if (timeToGameOver >= timeToChangeScreen)
+        {
+            SceneManager.LoadScene(0);
+            timeToGameOver = resetTime;
+        }  
+    }
+
+    public void VictoryTrigger()
+    {
+        isWon = true;
+        Debug.Log("Won");
+        //ChangeScreen
+    }
+}

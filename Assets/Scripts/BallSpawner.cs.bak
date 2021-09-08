@@ -1,0 +1,79 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class BallSpawner : MonoBehaviour
+{
+    //private
+    private Vector3 spawnPos;
+    private float newSpawnDuration = .5f;
+    private BallController ballController;
+    
+
+    //public
+    public GameController gameController;
+
+    //serialized
+    [SerializeField] private Queue<GameObject> ballPrefabs;
+    [SerializeField] private GameObject normalBallPrefab;
+    [SerializeField] private GameObject dropBallPrefab;
+    [SerializeField] private GameObject explosiveBallPrefab;
+    [SerializeField] private GameObject bouncyBallPrefab;
+
+    #region Singleton
+    public static BallSpawner Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
+    #endregion
+
+    private void Start()
+    {
+        ballPrefabs = new Queue<GameObject>();
+        switch (SceneManager.GetActiveScene().buildIndex)   // Hacemos un switch con el nivel en el que estemos
+        {
+            case 1:    // En el nivel 1, 3 pelotas normales
+                ballPrefabs.Enqueue(normalBallPrefab);
+                ballPrefabs.Enqueue(normalBallPrefab);        // Agregamos a la cola las pelotas que queramos en cada caso
+                ballPrefabs.Enqueue(normalBallPrefab);
+                break;
+            case 2:    // En el nivel 2, 1 normal y 2 que rebotan
+                ballPrefabs.Enqueue(normalBallPrefab);
+                ballPrefabs.Enqueue(bouncyBallPrefab);
+                ballPrefabs.Enqueue(bouncyBallPrefab);
+                break;
+            case 3:
+                ballPrefabs.Enqueue(normalBallPrefab);
+                ballPrefabs.Enqueue(bouncyBallPrefab);
+                ballPrefabs.Enqueue(explosiveBallPrefab);
+                break;
+            case 4:
+                ballPrefabs.Enqueue(bouncyBallPrefab);
+                ballPrefabs.Enqueue(explosiveBallPrefab);
+                ballPrefabs.Enqueue(explosiveBallPrefab);
+                break;
+        }
+        spawnPos = transform.position;
+        SpawnNewBall(); // spawnea la primera sola
+    }
+
+    public void SpawnNewBall()
+    {
+        if (ballPrefabs.Count > 0) //si hay pelotas para que spawneen
+        {
+            GameObject ball = Instantiate(ballPrefabs.Peek(), spawnPos, Quaternion.identity);  //Spawneamos la que está primera en la cola
+            ball.name = ballPrefabs.Peek().name;
+            ballPrefabs.Dequeue();    // Acá la desacolamos entonces la próxima vez que se ejecute será la siguiente en la cola
+            gameController.AddBall();
+        }
+        else return;
+    }
+
+    public void NewSpawnRequest()
+    {
+        Invoke("SpawnNewBall", newSpawnDuration);
+    }
+
+}
