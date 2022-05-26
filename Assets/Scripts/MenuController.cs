@@ -11,28 +11,33 @@ public class MenuController : MonoBehaviour
     public GameObject creditsMenu;
 
 
+    // Play
    public void Jugar()
     {
         SceneManager.LoadScene(1);
     }
 
+   // Levels
     public void Niveles()
     {
         mainMenu.SetActive(false);
         levelsMenu.SetActive(true);
     }
 
+    // Credits
     public void Creditos()
     {
         mainMenu.SetActive(false);
         creditsMenu.SetActive(true);
     }
 
+    // Quit
     public void Salir()
     {
         Application.Quit();
     }
 
+    // Back
     public void Atras()
     {
         mainMenu.SetActive(true);
@@ -40,7 +45,7 @@ public class MenuController : MonoBehaviour
         creditsMenu.SetActive(false);
     }
 
-    //NIVELES
+    //Levels
 
 
     public void Level1()

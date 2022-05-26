@@ -28,7 +28,7 @@ public class LineDrawScript : MonoBehaviour
         Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         direction = transform.position - worldMousePosition;
 
-        DrawLine();    // línea que muestra la trayectoria
+        DrawLine();    // show trajectory line
     }
 
     private void OnMouseDown()
@@ -50,17 +50,17 @@ public class LineDrawScript : MonoBehaviour
 
     public void DrawLine()
     {
-        if (drawLine && !isShoot)   //Si hay que dibujar la linea...    
+        if (drawLine && !isShoot)
         {
             
             Vector3 force = mousePressDownPos - mousePos;
-            int segmentCount = 6;     // cantidad de segmentos, determinan que tan larga será la línea
+            int segmentCount = 6;     // lenght of line
             Vector2[] segments = new Vector2[segmentCount];
-
-            // primer segmento de la línea
+            
+            
             segments[0] = transform.position;
 
-            // velocidad inicial
+
             Vector2 segVelocity = new Vector2(Mathf.Clamp(force.x, force.x, 350), Mathf.Clamp(force.y, force.y, 350)) / 16f;
 
             for (int i = 1; i < segmentCount; i++)

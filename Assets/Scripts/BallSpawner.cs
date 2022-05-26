@@ -41,15 +41,15 @@ public class BallSpawner : MonoBehaviour
     {
         ballPrefabs = new Queue<GameObject>();
         ballSprites = new Queue<Sprite>();
-        switch (SceneManager.GetActiveScene().buildIndex)   // Hacemos un switch con el nivel en el que estemos
+        switch (SceneManager.GetActiveScene().buildIndex)   // Switch with current level
         {
             case 1:    
                 ballPrefabs.Enqueue(normalBallPrefab);
-                ballPrefabs.Enqueue(normalBallPrefab);        // Agregamos a la cola las pelotas que queramos en cada caso
+                ballPrefabs.Enqueue(normalBallPrefab);        // We add the balls we want in each level
                 ballPrefabs.Enqueue(normalBallPrefab);
 
 
-                ballSprites.Enqueue(normalBallSprite);        // Agregamos a la cola los sprites para ver cual será la siguiente, iguales a los prefabs pero sin el primero
+                ballSprites.Enqueue(normalBallSprite);        // We add sprites to a list to show wich ball is next
                 ballSprites.Enqueue(normalBallSprite);
                 break;
             case 2:    
@@ -143,18 +143,18 @@ public class BallSpawner : MonoBehaviour
 
         }
         spawnPos = transform.position;
-        SpawnNewBall(); // spawnea la primera sola
+        SpawnNewBall();
     }
 
     public void SpawnNewBall()
     {
-        if (ballPrefabs.Count > 0) //si hay pelotas para que spawneen
+        if (ballPrefabs.Count > 0)
         {
-            GameObject ball = Instantiate(ballPrefabs.Peek(), spawnPos, Quaternion.identity);  //Spawneamos la que está primera en la cola
+            GameObject ball = Instantiate(ballPrefabs.Peek(), spawnPos, Quaternion.identity);  //Spawn first in line
             ball.name = ballPrefabs.Peek().name;
             if (ballSprites.Count > 0) nextBallImage.sprite = ballSprites.Peek();
             else nextBallImage.color = new Color(255, 255, 255, 0);
-            ballPrefabs.Dequeue();    // Acá la desacolamos entonces la próxima vez que se ejecute será la siguiente en la cola
+            ballPrefabs.Dequeue();
             if(ballSprites.Count > 0) ballSprites.Dequeue();
             gameController.AddBall();
         }
